@@ -65,7 +65,9 @@ def _expdes_dist(gen, iterations, lb, ub, int_var):
         if all([x is not None for x in [lb, ub]]):  # Map and round
             cand = round_vars(from_unit_box(cand, lb, ub), int_var, lb, ub)
 
-        if not check_cand(cand): continue
+        #if not check_cand(cand): continue
+        print(cand)
+        break
         dists = cdist(cand, cand)
         np.fill_diagonal(dists, np.inf)  # Since these are zero
         score = dists.min().min()
