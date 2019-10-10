@@ -65,7 +65,7 @@ def _expdes_dist(gen, iterations, lb, ub, int_var):
         if all([x is not None for x in [lb, ub]]):  # Map and round
             cand = round_vars(from_unit_box(cand, lb, ub), int_var, lb, ub)
 
-        check_cand(my_cand)
+        if not check_cand(my_cand): continue
         dists = cdist(cand, cand)
         np.fill_diagonal(dists, np.inf)  # Since these are zero
         score = dists.min().min()
@@ -78,7 +78,11 @@ def _expdes_dist(gen, iterations, lb, ub, int_var):
         raise ValueError("No valid design found, increase num_pts?")
     return X
 
-
+def check_cand(cand):
+    number_of_zeros = sum([1 for x in cand if x == 0])
+    if number_of_zeros > 5: return 0
+    return 1
+  
 class LatinHypercube(ExperimentalDesign):
     """Latin Hypercube experimental design.
 
